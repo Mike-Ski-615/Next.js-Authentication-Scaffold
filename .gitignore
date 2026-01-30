@@ -43,4 +43,11 @@ next-env.d.ts
 # bun
 bun.lock*
 
-/lib/generated/prisma
+# prisma
+/prisma/generated
+/prisma/migrations
+
+# IDE
+.kiro
+.vscode
+.idea

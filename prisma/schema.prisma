@@ -1,32 +1,110 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-// Example models
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+enum AuthFlow {
+  sign_in
+  sign_up
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+enum IdentifierType {
+  email
+  phone
+}
+
+enum AuthStep {
+  default
+  wallets
+  email
+  phone
+  passkey
+  register
+}
+
+model account {
+  id                    String    @id @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model passkey {
+  id           String   @id @default(uuid())
+  name         String?
+  publicKey    String
+  userId       String
+  credentialID String
+  counter      Int
+  deviceType   String
+  backedUp     Boolean  @default(false)
+  transports   String?
+  aaguid       String?
+  createdAt    DateTime @default(now())
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([credentialID])
+  @@index([userId])
+}
+
+model session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model user {
+  id                  String    @id @default(uuid())
+  name                String
+  email               String    @unique
+  image               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  phoneNumber         String?   @unique
+  emailVerified       Boolean   @default(false)
+  phoneNumberVerified Boolean   @default(false)
+  account             account[]
+  passkey             passkey[]
+  session             session[]
+}
+
+model verification {
+  id             String         @id @default(uuid())
+  identifier     String
+  value          String
+  expiresAt      DateTime
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  attemptCount   Int            @default(0)
+  flow           AuthFlow
+  identifierType IdentifierType
+  step           AuthStep
+  usedAt         DateTime?
+
+  @@index([identifier])
 }
