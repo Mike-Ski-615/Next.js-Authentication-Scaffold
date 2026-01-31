@@ -103,23 +103,36 @@
 
 观看完整的认证流程演示：
 
-https://github.com/user-attachments/assets/2026-01-31-18-35-19.mp4
+[![演示视频](./image1.png)](./2026-01-31%2018-35-19.mp4)
+
+> 📥 [点击这里下载观看演示视频](./2026-01-31%2018-35-19.mp4)
 
 ### 📸 截图预览
 
 <div align="center">
 
-#### 登录界面
-<img src="./image1.png" alt="登录界面" width="800"/>
-
-#### 邮箱 OTP 验证
-<img src="./image2.png" alt="邮箱 OTP 验证" width="800"/>
-
-#### 注册流程
-<img src="./image3.png" alt="注册流程" width="800"/>
-
-#### 仪表板
-<img src="./image4.png" alt="仪表板" width="800"/>
+<table>
+<tr>
+<td width="50%">
+<h4 align="center">🏠 主页</h4>
+<img src="./image1.png" alt="主页" width="100%"/>
+</td>
+<td width="50%">
+<h4 align="center">🔗 连接钱包</h4>
+<img src="./image2.png" alt="连接钱包" width="100%"/>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<h4 align="center">🔐 Passkey 认证</h4>
+<img src="./image3.png" alt="Passkey" width="100%"/>
+</td>
+<td width="50%">
+<h4 align="center">📧 邮箱登录</h4>
+<img src="./image4.png" alt="邮箱登录" width="100%"/>
+</td>
+</tr>
+</table>
 
 </div>
 

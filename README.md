@@ -99,27 +99,40 @@
 
 ## 🎯 Demo
 
-### � Demo Video
+### 📹 Demo Video
 
 Watch the full authentication flow in action:
 
-https://github.com/user-attachments/assets/2026-01-31-18-35-19.mp4
+[![Demo Video](./image1.png)](./2026-01-31%2018-35-19.mp4)
+
+> 📥 [Click here to download and watch the demo video](./2026-01-31%2018-35-19.mp4)
 
 ### 📸 Screenshots
 
 <div align="center">
 
-#### Login Interface
-<img src="./image1.png" alt="Login Interface" width="800"/>
-
-#### Email OTP Verification
-<img src="./image2.png" alt="Email OTP Verification" width="800"/>
-
-#### Registration Flow
-<img src="./image3.png" alt="Registration Flow" width="800"/>
-
-#### Dashboard
-<img src="./image4.png" alt="Dashboard" width="800"/>
+<table>
+<tr>
+<td width="50%">
+<h4 align="center">🏠 Home Page</h4>
+<img src="./image1.png" alt="Home Page" width="100%"/>
+</td>
+<td width="50%">
+<h4 align="center">🔗 Connect Wallet</h4>
+<img src="./image2.png" alt="Connect Wallet" width="100%"/>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<h4 align="center">🔐 Passkey Authentication</h4>
+<img src="./image3.png" alt="Passkey" width="100%"/>
+</td>
+<td width="50%">
+<h4 align="center">📧 Email Sign In</h4>
+<img src="./image4.png" alt="Email Sign In" width="100%"/>
+</td>
+</tr>
+</table>
 
 </div>
 
