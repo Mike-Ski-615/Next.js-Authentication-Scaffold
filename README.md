@@ -99,16 +99,29 @@
 
 ## 🎯 Demo
 
-> 🚧 **Coming Soon** - Live demo will be available shortly
+### � Demo Video
 
-### Screenshots
+Watch the full authentication flow in action:
 
-<details>
-<summary>📸 Click to view screenshots</summary>
+https://github.com/user-attachments/assets/2026-01-31-18-35-19.mp4
 
-*Screenshots will be added soon*
+### 📸 Screenshots
 
-</details>
+<div align="center">
+
+#### Login Interface
+<img src="./image1.png" alt="Login Interface" width="800"/>
+
+#### Email OTP Verification
+<img src="./image2.png" alt="Email OTP Verification" width="800"/>
+
+#### Registration Flow
+<img src="./image3.png" alt="Registration Flow" width="800"/>
+
+#### Dashboard
+<img src="./image4.png" alt="Dashboard" width="800"/>
+
+</div>
 
 ---
 

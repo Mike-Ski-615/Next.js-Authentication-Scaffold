@@ -99,16 +99,29 @@
 
 ## 🎯 在线演示
 
-> 🚧 **即将推出** - 在线演示即将上线
+### 📹 演示视频
 
-### 截图预览
+观看完整的认证流程演示：
 
-<details>
-<summary>📸 点击查看截图</summary>
+https://github.com/user-attachments/assets/2026-01-31-18-35-19.mp4
 
-*截图即将添加*
+### 📸 截图预览
 
-</details>
+<div align="center">
+
+#### 登录界面
+<img src="./image1.png" alt="登录界面" width="800"/>
+
+#### 邮箱 OTP 验证
+<img src="./image2.png" alt="邮箱 OTP 验证" width="800"/>
+
+#### 注册流程
+<img src="./image3.png" alt="注册流程" width="800"/>
+
+#### 仪表板
+<img src="./image4.png" alt="仪表板" width="800"/>
+
+</div>
 
 ---
 
