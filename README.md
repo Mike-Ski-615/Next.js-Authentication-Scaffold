@@ -103,9 +103,7 @@
 
 Watch the full authentication flow in action:
 
-[![Demo Video](./image1.png)](./2026-01-31%2018-35-19.mp4)
-
-> 📥 [Click here to download and watch the demo video](./2026-01-31%2018-35-19.mp4)
+https://github.com/user-attachments/assets/a10d0cb9-6d0f-4eae-8377-082e16b50780
 
 ### 📸 Screenshots
 
