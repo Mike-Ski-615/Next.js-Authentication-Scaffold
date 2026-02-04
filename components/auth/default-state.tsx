@@ -7,6 +7,7 @@ import { motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { Field } from "@/components/ui/field"
+import { Separator } from "@/components/ui/separator"
 import {
   passkeyFormSchema,
   type PasskeyFormData,
@@ -24,7 +25,7 @@ import {
 
 import { ITEM_VARIANTS, LOGIN_TABS } from "../../type/constants"
 import type { DefaultStateProps, LoginTabKey, SocialProviderKey } from "../../type/types"
-import { useEmailAuthForm, usePhoneAuthForm } from "./hooks/use-auth-form"
+import { useAuthForm } from "./hooks/use-auth-form"
 import { AuthFormInput } from "./components/auth-form-input"
 
 // ─────────────────────────────────────────────────────────────
@@ -58,14 +59,19 @@ export default function DefaultState({ onStateChange }: DefaultStateProps) {
         </motion.div>
 
         <div>
-          {activeTab === "email" && <EmailForm onStateChange={onStateChange} />}
-          {activeTab === "phone" && <PhoneForm onStateChange={onStateChange} />}
+          {activeTab === "email" && <IdentifierForm identifierType="email" onStateChange={onStateChange} />}
+          {activeTab === "phone" && <IdentifierForm identifierType="phone" onStateChange={onStateChange} />}
           {activeTab === "passkey" && <PasskeyForm onStateChange={onStateChange} />}
         </div>
       </div>
 
       <motion.div variants={ITEM_VARIANTS} initial="initial" animate="animate">
-        <Divider />
+        <div className="relative my-0.5 flex h-6 items-center justify-center">
+          <Separator className="absolute inset-x-0 my-0.5" />
+          <span className="relative bg-popover px-2 text-xs/relaxed uppercase text-muted-foreground">
+            or
+          </span>
+        </div>
       </motion.div>
 
       <motion.div variants={ITEM_VARIANTS} initial="initial" animate="animate">
@@ -86,19 +92,44 @@ export default function DefaultState({ onStateChange }: DefaultStateProps) {
 // Form Components
 // ─────────────────────────────────────────────────────────────
 
-function EmailForm({ onStateChange }: { onStateChange: DefaultStateProps["onStateChange"] }) {
-  const { form, isPending, onSubmit } = useEmailAuthForm({
-    onRegister: (email) => {
+// ─────────────────────────────────────────────────────────────
+// Unified Identifier Form - Single component for email/phone
+// ─────────────────────────────────────────────────────────────
+
+const IDENTIFIER_FORM_CONFIG = {
+  email: {
+    type: "email" as const,
+    placeholder: "Please enter email address",
+    autoComplete: "email",
+  },
+  phone: {
+    type: "tel" as const,
+    placeholder: "Please enter phone number",
+    autoComplete: "tel",
+  },
+} as const
+
+function IdentifierForm({ 
+  identifierType,
+  onStateChange,
+}: { 
+  identifierType: "email" | "phone"
+  onStateChange: DefaultStateProps["onStateChange"] 
+}) {
+  const config = IDENTIFIER_FORM_CONFIG[identifierType]
+  
+  const { form, isPending, onSubmit } = useAuthForm(identifierType, {
+    onRegister: (identifier) => {
       onStateChange({
         step: "register",
-        identifier: email,
-        identifierType: "email",
+        identifier,
+        identifierType,
       })
     },
-    onVerify: (email) => {
+    onVerify: (identifier) => {
       onStateChange({
-        step: "email",
-        identifier: email,
+        step: identifierType,
+        identifier,
         flow: "sign_in",
       })
     },
@@ -106,52 +137,16 @@ function EmailForm({ onStateChange }: { onStateChange: DefaultStateProps["onStat
 
   return (
     <form
-      id="email-form"
+      id={`${identifierType}-form`}
       onSubmit={form.handleSubmit(onSubmit)}
       className="mt-1 flex flex-col gap-1"
     >
       <AuthFormInput
         control={form.control}
-        name="email"
-        type="email"
-        placeholder="Please enter email address"
-        autoComplete="email"
-        isPending={isPending}
-      />
-    </form>
-  )
-}
-
-function PhoneForm({ onStateChange }: { onStateChange: DefaultStateProps["onStateChange"] }) {
-  const { form, isPending, onSubmit } = usePhoneAuthForm({
-    onRegister: (phone) => {
-      onStateChange({
-        step: "register",
-        identifier: phone,
-        identifierType: "phone",
-      })
-    },
-    onVerify: (phone) => {
-      onStateChange({
-        step: "phone",
-        identifier: phone,
-        flow: "sign_in",
-      })
-    },
-  })
-
-  return (
-    <form
-      id="phone-form"
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="mt-1 flex flex-col gap-1"
-    >
-      <AuthFormInput
-        control={form.control}
-        name="phone"
-        type="tel"
-        placeholder="Please enter phone number"
-        autoComplete="tel"
+        name="identifier"
+        type={config.type}
+        placeholder={config.placeholder}
+        autoComplete={config.autoComplete}
         isPending={isPending}
       />
     </form>
@@ -175,9 +170,10 @@ function PasskeyForm({ onStateChange }: { onStateChange: DefaultStateProps["onSt
       className="mt-1 flex flex-col gap-1"
     >
       <Field>
-        <button
+        <Button
           type="submit"
-          className="relative flex h-10 w-full items-center gap-2 rounded-xl bg-secondary pl-3 pr-12 transition-colors hover:bg-secondary/80"
+          variant="secondary"
+          className="relative h-10 w-full justify-start gap-2 rounded-xl pl-3 pr-12"
         >
           <IconFingerprint size={16} className="text-muted-foreground" />
           <span className="flex-1 text-left text-xs font-medium text-muted-foreground">
@@ -186,7 +182,7 @@ function PasskeyForm({ onStateChange }: { onStateChange: DefaultStateProps["onSt
           <div className="absolute right-1 top-1/2 flex h-8 w-10 -translate-y-1/2 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <IconArrowRight size={16} />
           </div>
-        </button>
+        </Button>
       </Field>
     </form>
   )
@@ -250,17 +246,6 @@ function TabSelector({
           )
         })}
       </div>
-    </div>
-  )
-}
-
-function Divider() {
-  return (
-    <div className="relative my-0.5 flex h-6 items-center justify-center">
-      <span className="absolute inset-x-0 border-t border-border" />
-      <span className="relative bg-popover px-2 text-xs/relaxed uppercase text-muted-foreground">
-        OR
-      </span>
     </div>
   )
 }

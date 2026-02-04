@@ -1,12 +1,8 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
-import {
-  emailFormSchema,
-  phoneFormSchema,
-  type EmailFormData,
-  type PhoneFormData,
-} from "@/lib/validation"
+import { z } from "zod"
+import { emailSchema, phoneSchema } from "@/lib/validation"
 import { checkUserExists } from "@/lib/actions/check-user"
 import { sendVerificationCode } from "@/lib/actions/verification-code"
 import type { IdentifierType } from "@/prisma/generated/prisma/enums"
@@ -21,68 +17,58 @@ interface UseAuthFormProps {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Shared Submit Logic
+// Configuration Map - Single source of truth
 // ─────────────────────────────────────────────────────────────
 
-async function handleAuthSubmit(
-  identifier: string,
-  type: IdentifierType,
-  { onRegister, onVerify }: UseAuthFormProps
-) {
-  const { exists } = await checkUserExists(identifier, type)
-
-  if (!exists) {
-    onRegister(identifier)
-    return
-  }
-
-  const result = await sendVerificationCode(
-    identifier,
-    type,
-    "sign_in",
-    "default"
-  )
-
-  toast.success("If the account exists, we have sent a verification code")
-
-  if (result.success) {
-    onVerify(identifier)
-  }
-
-  if (!result.success) {
-    toast.error(result.error)
-  }
-}
+const AUTH_FORM_CONFIG = {
+  email: {
+    schema: z.object({ identifier: emailSchema }),
+    defaultValue: "",
+  },
+  phone: {
+    schema: z.object({ identifier: phoneSchema }),
+    defaultValue: "",
+  },
+} as const
 
 // ─────────────────────────────────────────────────────────────
-// Specialized Hooks
+// Unified Auth Form Hook
 // ─────────────────────────────────────────────────────────────
 
-export function useEmailAuthForm(props: UseAuthFormProps) {
-  const form = useForm<EmailFormData>({
-    resolver: zodResolver(emailFormSchema),
-    defaultValues: { email: "" },
+export function useAuthForm(type: IdentifierType, props: UseAuthFormProps) {
+  const config = AUTH_FORM_CONFIG[type]
+  
+  const form = useForm<{ identifier: string }>({
+    resolver: zodResolver(config.schema),
+    defaultValues: { identifier: config.defaultValue },
   })
 
   const isPending = form.formState.isSubmitting
 
-  async function onSubmit(data: EmailFormData) {
-    await handleAuthSubmit(data.email, "email", props)
-  }
+  async function onSubmit(data: { identifier: string }) {
+    const { exists } = await checkUserExists(data.identifier, type)
 
-  return { form, isPending, onSubmit }
-}
+    if (!exists) {
+      props.onRegister(data.identifier)
+      return
+    }
 
-export function usePhoneAuthForm(props: UseAuthFormProps) {
-  const form = useForm<PhoneFormData>({
-    resolver: zodResolver(phoneFormSchema),
-    defaultValues: { phone: "" },
-  })
+    const result = await sendVerificationCode(
+      data.identifier,
+      type,
+      "sign_in",
+      "default"
+    )
 
-  const isPending = form.formState.isSubmitting
+    toast.success("If the account exists, we have sent a verification code")
 
-  async function onSubmit(data: PhoneFormData) {
-    await handleAuthSubmit(data.phone, "phone", props)
+    if (result.success) {
+      props.onVerify(data.identifier)
+    }
+
+    if (!result.success) {
+      toast.error(result.error)
+    }
   }
 
   return { form, isPending, onSubmit }

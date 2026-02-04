@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { IconChevronRight, IconPlus } from "@tabler/icons-react"
 import { motion } from "motion/react"
 import Image from "next/image"
@@ -65,19 +66,15 @@ function WalletButton({ wallet }: { wallet: Wallet }) {
             {wallet.label}
           </span>
 
-          {wallet.badge && <WalletBadge text={wallet.badge} />}
+          {wallet.badge && (
+            <Badge variant="secondary" className="text-gray-1100">
+              {wallet.badge}
+            </Badge>
+          )}
         </div>
 
         <IconChevronRight />
       </Button>
     </motion.div>
-  )
-}
-
-function WalletBadge({ text }: { text: string }) {
-  return (
-    <span className="flex select-none items-center justify-center rounded-full bg-preview-bg px-2 py-1 text-xs/relaxed font-semibold text-gray-1100">
-      {text}
-    </span>
   )
 }

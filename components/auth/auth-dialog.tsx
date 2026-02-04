@@ -14,25 +14,11 @@ import {
 import AuthHeader from "./auth-header"
 import ConnectWalletState from "./wallet-state"
 import DefaultState from "./default-state"
-import EmailState from "./email-state"
+import OTPVerificationState from "./otp-verification-state"
 import PasskeyState from "./passkey-state"
-import PhoneState from "./phone-state"
 import RegisterState from "./register-state"
 import { CONTENT_VARIANTS, AUTH_DIALOG_DEFAULT_HEIGHT } from "../../type/constants"
 import type { AuthState, StateComponentProps } from "../../type/types"
-
-// ─────────────────────────────────────────────────────────────
-// Constants
-// ─────────────────────────────────────────────────────────────
-
-const STATE_COMPONENTS: Record<AuthState["step"], React.ComponentType<StateComponentProps>> = {
-    default: DefaultState,
-    wallets: ConnectWalletState,
-    email: EmailState,
-    phone: PhoneState,
-    passkey: PasskeyState,
-    register: RegisterState,
-}
 
 // ─────────────────────────────────────────────────────────────
 // Component
@@ -88,22 +74,34 @@ export default function AuthDialog({ children }: { children: React.ReactNode }) 
 }
 
 // ─────────────────────────────────────────────────────────────
-// Sub Components
+// Step Content - Renders appropriate component based on state
 // ─────────────────────────────────────────────────────────────
 
 function StepContent({
     state,
     onStateChange,
-}: {
-    state: AuthState
-    onStateChange: (newState: AuthState) => void
-}) {
-    const Component = STATE_COMPONENTS[state.step]
+}: StateComponentProps) {
+    const renderContent = () => {
+        switch (state.step) {
+            case "default":
+                return <DefaultState onStateChange={onStateChange} />
+            case "wallets":
+                return <ConnectWalletState />
+            case "email":
+                return <OTPVerificationState state={state} onStateChange={onStateChange} type="email" />
+            case "phone":
+                return <OTPVerificationState state={state} onStateChange={onStateChange} type="phone" />
+            case "passkey":
+                return <PasskeyState state={state} onStateChange={onStateChange} />
+            case "register":
+                return <RegisterState state={state} onStateChange={onStateChange} />
+        }
+    }
 
     return (
         <AnimatePresence mode="popLayout" initial={false}>
             <motion.div key={state.step} {...CONTENT_VARIANTS}>
-                <Component state={state} onStateChange={onStateChange} />
+                {renderContent()}
             </motion.div>
         </AnimatePresence>
     )

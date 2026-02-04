@@ -8,12 +8,28 @@ import { ITEM_VARIANTS } from "../../type/constants"
 import type { StateComponentProps } from "../../type/types"
 import { useOTPVerification } from "./hooks/use-otp-verification"
 import { OTPInput } from "./components/otp-input"
+import type { IdentifierType } from "@/prisma/generated/prisma/enums"
 
 // ─────────────────────────────────────────────────────────────
-// Component
+// Types
 // ─────────────────────────────────────────────────────────────
 
-export default function EmailState({ state, onStateChange }: StateComponentProps) {
+interface OTPVerificationStateProps extends StateComponentProps {
+  type: IdentifierType
+}
+
+// ─────────────────────────────────────────────────────────────
+// Component - Unified OTP Verification for Email & Phone
+// ─────────────────────────────────────────────────────────────
+
+export default function OTPVerificationState({ 
+  state, 
+  onStateChange,
+  type,
+}: OTPVerificationStateProps) {
+  // Type guard: only render for matching step
+  const isValidStep = state.step === type
+  
   const {
     form,
     isPending,
@@ -22,14 +38,14 @@ export default function EmailState({ state, onStateChange }: StateComponentProps
     handleSubmit,
     handleResend,
   } = useOTPVerification({
-    identifier: state.step === "email" ? state.identifier : "",
-    type: "email",
-    flow: state.step === "email" ? state.flow : "sign_in",
-    name: state.step === "email" ? state.name : undefined,
+    identifier: isValidStep ? state.identifier : "",
+    type,
+    flow: isValidStep ? state.flow : "sign_in",
+    name: isValidStep ? state.name : undefined,
     onSuccess: () => onStateChange({ step: "default" }),
   })
 
-  if (state.step !== "email") return null
+  if (!isValidStep) return null
 
   return (
     <motion.div
@@ -44,7 +60,7 @@ export default function EmailState({ state, onStateChange }: StateComponentProps
           isPending={isPending}
           isResending={isResending}
           errorMessage={errorMessage}
-          type="email"
+          type={type}
           onResend={handleResend}
         />
 

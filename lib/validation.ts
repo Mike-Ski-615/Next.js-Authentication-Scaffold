@@ -11,15 +11,6 @@ export const emailSchema = z
   .min(1, "Please enter email address")
   .email({ message: "Please enter a valid email address" })
 
-/**
- * Email form schema for use with react-hook-form
- */
-export const emailFormSchema = z.object({
-  email: emailSchema,
-})
-
-export type EmailFormData = z.infer<typeof emailFormSchema>
-
 // ─────────────────────────────────────────────────────────────
 // Phone Number Validation Schema
 // ─────────────────────────────────────────────────────────────
@@ -36,15 +27,6 @@ export const phoneSchema = z
   .string()
   .min(1, "Please enter phone number")
   .regex(/^1[3-9]\d{9}$/, "Please enter a valid phone number")
-
-/**
- * Phone form schema for use with react-hook-form
- */
-export const phoneFormSchema = z.object({
-  phone: phoneSchema,
-})
-
-export type PhoneFormData = z.infer<typeof phoneFormSchema>
 
 // ─────────────────────────────────────────────────────────────
 // Name Validation Schema

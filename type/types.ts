@@ -4,21 +4,18 @@ import type { AuthFlow, IdentifierType } from "@/prisma/generated/prisma/enums"
 // Auth State - Authentication State (Unified State Management)
 // ─────────────────────────────────────────────────────────────
 
+// Base state for OTP verification (email/phone share same structure)
+interface OTPVerificationState {
+  identifier: string
+  flow: AuthFlow
+  name?: string // Optional name for sign-up
+}
+
 export type AuthState =
   | { step: "default" }
   | { step: "wallets" }
-  | { 
-      step: "email"
-      identifier: string
-      flow: AuthFlow
-      name?: string // Optional name for sign-up
-    }
-  | { 
-      step: "phone"
-      identifier: string
-      flow: AuthFlow
-      name?: string // Optional name for sign-up
-    }
+  | ({ step: "email" } & OTPVerificationState)
+  | ({ step: "phone" } & OTPVerificationState)
   | { step: "passkey" }
   | { 
       step: "register"
