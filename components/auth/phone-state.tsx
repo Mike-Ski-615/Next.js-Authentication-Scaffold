@@ -14,10 +14,6 @@ import { OTPInput } from "./components/otp-input"
 // ─────────────────────────────────────────────────────────────
 
 export default function PhoneState({ state, onStateChange }: StateComponentProps) {
-  if (state.step !== "phone") return null
-
-  const { identifier, flow, name } = state
-
   const {
     form,
     isPending,
@@ -26,12 +22,14 @@ export default function PhoneState({ state, onStateChange }: StateComponentProps
     handleSubmit,
     handleResend,
   } = useOTPVerification({
-    identifier,
+    identifier: state.step === "phone" ? state.identifier : "",
     type: "phone",
-    flow,
-    name,
+    flow: state.step === "phone" ? state.flow : "sign_in",
+    name: state.step === "phone" ? state.name : undefined,
     onSuccess: () => onStateChange({ step: "default" }),
   })
+
+  if (state.step !== "phone") return null
 
   return (
     <motion.div

@@ -4,7 +4,6 @@ import { useState, useCallback } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import { useMeasure } from "@/hooks/use-measure"
-import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -19,7 +18,7 @@ import EmailState from "./email-state"
 import PasskeyState from "./passkey-state"
 import PhoneState from "./phone-state"
 import RegisterState from "./register-state"
-import { CONTENT_VARIANTS } from "../../type/constants"
+import { CONTENT_VARIANTS, AUTH_DIALOG_DEFAULT_HEIGHT } from "../../type/constants"
 import type { AuthState, StateComponentProps } from "../../type/types"
 
 // ─────────────────────────────────────────────────────────────
@@ -72,7 +71,7 @@ export default function AuthDialog({ children }: { children: React.ReactNode }) 
 
                 <motion.div
                     animate={{
-                        height: authState.step === "default" ? 210 : bounds.height,
+                        height: authState.step === "default" ? AUTH_DIALOG_DEFAULT_HEIGHT : bounds.height,
                     }}
                     className="will-change-transform"
                 >

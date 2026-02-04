@@ -84,3 +84,9 @@ export const CONTENT_VARIANTS = {
     duration: 0.3,
   },
 }
+
+// ─────────────────────────────────────────────────────────────
+// Layout Constants - Layout Configuration
+// ─────────────────────────────────────────────────────────────
+
+export const AUTH_DIALOG_DEFAULT_HEIGHT = 210

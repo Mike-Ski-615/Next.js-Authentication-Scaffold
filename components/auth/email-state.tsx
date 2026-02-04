@@ -14,10 +14,6 @@ import { OTPInput } from "./components/otp-input"
 // ─────────────────────────────────────────────────────────────
 
 export default function EmailState({ state, onStateChange }: StateComponentProps) {
-  if (state.step !== "email") return null
-
-  const { identifier, flow, name } = state
-
   const {
     form,
     isPending,
@@ -26,12 +22,14 @@ export default function EmailState({ state, onStateChange }: StateComponentProps
     handleSubmit,
     handleResend,
   } = useOTPVerification({
-    identifier,
+    identifier: state.step === "email" ? state.identifier : "",
     type: "email",
-    flow,
-    name,
+    flow: state.step === "email" ? state.flow : "sign_in",
+    name: state.step === "email" ? state.name : undefined,
     onSuccess: () => onStateChange({ step: "default" }),
   })
+
+  if (state.step !== "email") return null
 
   return (
     <motion.div

@@ -3,6 +3,7 @@
  */
 
 import type { user } from "@/prisma/generated/prisma/client"
+import type { SessionPayload } from "@/lib/session"
 
 /**
  * User DTO - Only includes safe user fields for client exposure
@@ -31,11 +32,14 @@ export function isSessionExpired(expiresAt: Date): boolean {
 }
 
 /**
- * Validate session payload
+ * Type guard to validate session payload
+ * Narrows type from SessionPayload | null to SessionPayload
  * @param sessionPayload - The session payload to validate
  * @returns true if session is valid (exists and not expired), false otherwise
  */
-export function isSessionValid(sessionPayload: { expiresAt: Date } | null): boolean {
+export function isSessionValid(
+  sessionPayload: SessionPayload | null
+): sessionPayload is SessionPayload {
   if (!sessionPayload) return false
   return !isSessionExpired(sessionPayload.expiresAt)
 }

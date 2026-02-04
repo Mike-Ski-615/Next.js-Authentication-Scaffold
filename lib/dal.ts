@@ -35,10 +35,9 @@ export const verifySession = cache(async (): Promise<VerifiedSession> => {
     redirect("/")
   }
 
-  // TypeScript now knows sessionPayload is not null
-  // Verify session validity from database
+  // TypeScript now knows sessionPayload is SessionPayload (not null)
   const session = await prisma.session.findUnique({
-    where: { id: sessionPayload!.sessionId },
+    where: { id: sessionPayload.sessionId },
     include: { user: true },
   })
 
@@ -80,9 +79,9 @@ export const checkAuth = cache(async (): Promise<{ isAuth: boolean; user: UserDT
     return { isAuth: false, user: null }
   }
 
-  // TypeScript now knows sessionPayload is not null
+  // TypeScript now knows sessionPayload is SessionPayload (not null)
   const session = await prisma.session.findUnique({
-    where: { id: sessionPayload!.sessionId },
+    where: { id: sessionPayload.sessionId },
     include: { user: true },
   })
 

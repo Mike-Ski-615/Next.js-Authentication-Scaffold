@@ -1,4 +1,4 @@
-import { Controller } from "react-hook-form"
+import { Controller, Control } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import {
   Field,
@@ -26,7 +26,7 @@ const OTP_LENGTH = 6
 // ─────────────────────────────────────────────────────────────
 
 interface OTPInputProps {
-  control: any
+  control: Control<{ otp: string }>
   isPending: boolean
   isResending: boolean
   errorMessage: string

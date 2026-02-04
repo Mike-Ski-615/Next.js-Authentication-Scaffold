@@ -1,4 +1,4 @@
-import { Controller } from "react-hook-form"
+import { Controller, Control, FieldValues, Path } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Field, FieldError } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils"
 // Types
 // ─────────────────────────────────────────────────────────────
 
-interface AuthFormInputProps {
-  control: any
-  name: string
+interface AuthFormInputProps<T extends FieldValues> {
+  control: Control<T>
+  name: Path<T>
   type: string
   placeholder: string
   autoComplete: string
@@ -22,14 +22,14 @@ interface AuthFormInputProps {
 // Component
 // ─────────────────────────────────────────────────────────────
 
-export function AuthFormInput({
+export function AuthFormInput<T extends FieldValues>({
   control,
   name,
   type,
   placeholder,
   autoComplete,
   isPending,
-}: AuthFormInputProps) {
+}: AuthFormInputProps<T>) {
   return (
     <Controller
       name={name}
