@@ -9,7 +9,7 @@ import { checkAuth } from "@/lib/dal"
 
 async function DashboardButton() {
   const { isAuth } = await checkAuth()
-  
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -44,17 +44,20 @@ export default function Page() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-black/[.08] dark:border-white/[.145] bg-black/[.02] dark:bg-white/[.02]">
             <IconShieldCheck className="w-3.5 h-3.5" />
             <span className="text-xs font-medium">
-              Production-Ready Authentication
+              Full-stack Authentication Reference
             </span>
           </div>
 
           <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-            <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-              Complete authentication system with 5 auth methods built in.
+            <h1 className="max-w-xl text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+              A modular authentication flow with OTP verification, server sessions, and a protected dashboard.
             </h1>
 
-            <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-              Email OTP, Phone OTP, Passkey, Wallet, and Social Login. Built with{" "}
+            <p className="max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+              Email and phone OTP flows persist to PostgreSQL through Prisma. Sessions use an
+              HttpOnly JWT cookie plus a database record validated in the data access layer.
+              Passkey, wallet, and social-provider states are UI placeholders ready for a real
+              provider integration. Built with{" "}
               <a
                 href="https://nextjs.org"
                 className="font-medium text-zinc-950 dark:text-zinc-50"
@@ -101,7 +104,7 @@ export default function Page() {
 
             <a
               className="flex h-12 w-full items-center justify-center gap-2 rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-              href="https://github.com/Mike-Ski-615/scaffold"
+              href="https://github.com/Mike-Ski-615/Next.js-Authentication-Scaffold"
               target="_blank"
               rel="noopener noreferrer"
             >
