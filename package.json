@@ -1,14 +1,18 @@
 {
   "name": "nextjs-auth-scaffold",
   "version": "0.1.0",
-  "description": "A full-featured, modular Next.js system scaffold with multiple methods",
+  "description": "Modular Next.js 16 authentication scaffold with OTP verification flows, JWT sessions, Prisma, and PostgreSQL.",
   "type": "module",
   "private": true,
   "author": "Mike-Ski",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mike-Ski-615/scaffold.git"
+    "url": "git+https://github.com/Mike-Ski-615/Next.js-Authentication-Scaffold.git"
+  },
+  "homepage": "https://github.com/Mike-Ski-615/Next.js-Authentication-Scaffold#readme",
+  "bugs": {
+    "url": "https://github.com/Mike-Ski-615/Next.js-Authentication-Scaffold/issues"
   },
   "keywords": [
     "nextjs",
