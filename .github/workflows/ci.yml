@@ -45,7 +45,18 @@ jobs:
         run: bun install
 
       - name: Lint
-        run: bun run lint
+        run: |
+          set +e
+          bun run lint 2>&1 | tee lint-report.txt
+          exit "${PIPESTATUS[0]}"
+
+      - name: Upload lint report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: lint-report.txt
+          if-no-files-found: ignore
 
       - name: Type-check
         run: bun run type-check
